@@ -1,0 +1,80 @@
+# AI Compliance Platform - Docker Compose Configuration
+# Sample deployment setup for local development
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=ai-compliance-platform-secret-key-change-in-production
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ai_compliance
+      - SQLITE_FALLBACK=ai_compliance.db
+    volumes:
+      - ./backend:/app
+      - backend_data:/app/data
+    command: gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ai-compliance-network
+        
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ai_compliance
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ai-compliance-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm start
+    depends_on:
+      - backend
+    networks:
+      - ai-compliance-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - ai-compliance-network
+
+volumes:
+  backend_data:
+  postgres_data:
+
+networks:
+  ai-compliance-network:
+    driver: bridge

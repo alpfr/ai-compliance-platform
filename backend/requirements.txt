@@ -1,0 +1,30 @@
+# AI Compliance Platform Backend Dependencies
+
+# FastAPI and ASGI server
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+
+# Authentication and security
+PyJWT==2.10.1
+python-multipart==0.0.20
+passlib[bcrypt]==1.7.4
+
+# Database
+# sqlite3 is built into Python
+SQLAlchemy==2.0.23
+psycopg2-binary==2.9.9
+
+# Data validation and serialization
+pydantic==2.10.5
+
+# HTTP client for external API calls
+httpx==0.28.1
+
+# Development and testing
+pytest==8.3.4
+pytest-asyncio==0.25.0
+requests==2.32.3
+
+# Optional: For production deployment
+gunicorn==23.0.0
+python-dotenv==1.0.1
