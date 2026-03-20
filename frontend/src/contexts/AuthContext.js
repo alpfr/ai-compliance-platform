@@ -60,7 +60,16 @@ export function AuthProvider({ children }) {
         password
       });
 
-      const { access_token, user_role, organization_id } = response.data;
+      const { access_token, user_role, organization_id, debug_traceback } = response.data;
+      
+      if (debug_traceback) {
+        console.error("Backend generated a traceback: ", debug_traceback);
+        return { success: false, error: 'Internal Server Error. Please contact support.' };
+      }
+      
+      if (!access_token) {
+        return { success: false, error: 'Failed to retrieve access token.' };
+      }
       
       const userData = {
         username,

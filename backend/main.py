@@ -497,6 +497,8 @@ async def login(user_data: UserLogin):
                 "user_role": user["role"],
                 "organization_id": user["organization_id"]
             }
+    except HTTPException:
+        raise
     except Exception as e:
         # Expose the literal internal Traceback securely through the API payload to bypass opaque 500 errors!
         return {"debug_traceback": traceback.format_exc()}
