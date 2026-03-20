@@ -18,6 +18,11 @@ A comprehensive system for operationalizing AI compliance frameworks, serving du
 - Risk assessment and scoring
 - Automated corrective measures
 
+### Executive Dashboard & LLM Management
+- Executive-level visual KPIs and Global Risk Heatmaps
+- Real-time LLM AI Model Registry and Capabilities Matching
+- Audit logging exclusively for Model Operations
+
 ### Comprehensive Audit Trail
 - Complete activity logging with timestamps
 - User attribution and evidence tracking
@@ -152,6 +157,8 @@ Create your own regex patterns for industry-specific compliance requirements.
 | `/assessments` | GET/POST/PUT | Assessment management |
 | `/guardrails` | GET/POST | Guardrail configuration |
 | `/guardrails/filter` | POST | Content filtering |
+| `/api/v1/models` | GET/POST/PUT/DELETE | AI Model LLM Management via Registry |
+| `/api/v1/models/audit` | GET | Audit trail exclusively for AI Models |
 | `/compliance/dashboard` | GET | Dashboard data |
 | `/audit-trail` | GET | Audit trail |
 

@@ -27,7 +27,8 @@ import {
   Logout as LogoutIcon,
   GroupAdd as GroupAddIcon,
   Info as InfoIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  Psychology as PsychologyIcon
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -51,7 +52,8 @@ export default function Navigation() {
       { text: 'Organizations', icon: <BusinessIcon />, path: '/organizations' }
     ] : []),
     ...(user?.role === 'organization_admin' || user?.role === 'super_admin' ? [
-      { text: 'Pending Approvals', icon: <GroupAddIcon />, path: '/approvals' }
+      { text: 'Pending Approvals', icon: <GroupAddIcon />, path: '/approvals' },
+      { text: 'LLM Management', icon: <PsychologyIcon />, path: '/llm-management' }
     ] : []),
     { text: 'Audit Trail', icon: <HistoryIcon />, path: '/audit-trail' },
     { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },

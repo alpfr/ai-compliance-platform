@@ -21,6 +21,7 @@ import Navigation from './components/Navigation';
 import PendingApprovals from './components/PendingApprovals';
 import About from './components/About';
 import Settings from './components/Settings';
+import LLMManagement from './components/LLMManagement';
 
 // Premium Dark Theme configuration
 const theme = createTheme({
@@ -136,6 +137,11 @@ function AppContent() {
           <Route path="/settings" element={
             <ProtectedRoute>
               <Settings />
+            </ProtectedRoute>
+          } />
+          <Route path="/llm-management" element={
+            <ProtectedRoute>
+              <LLMManagement />
             </ProtectedRoute>
           } />
         </Routes>

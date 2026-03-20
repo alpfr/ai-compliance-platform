@@ -142,6 +142,19 @@ export function ApiProvider({ children }) {
     }
   };
 
+  const apiCall = async (url, method = 'GET', data = null) => {
+    try {
+      const response = await apiClient({
+        method,
+        url,
+        data
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error.response?.data?.detail || error.message || 'API call failed' };
+    }
+  };
+
   const value = {
     // Organizations
     getOrganizations,
@@ -165,7 +178,10 @@ export function ApiProvider({ children }) {
 
     // Admin
     getPendingUsers,
-    approveUser
+    approveUser,
+    
+    // Generic
+    apiCall
   };
 
   return (
