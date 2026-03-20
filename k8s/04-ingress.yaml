@@ -4,8 +4,7 @@ metadata:
   name: ai-compliance-ingress
   namespace: ai-compliance
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    # GKE specific annotations (modify if using standard gce ingress instead of nginx)
+    kubernetes.io/ingress.class: "gce"
     # kubernetes.io/ingress.global-static-ip-name: "ai-compliance-ip"
 spec:
   rules:

@@ -9,14 +9,17 @@ import {
   Grid,
   Card,
   CardContent,
+  CardActions,
   CircularProgress,
   Alert,
   Chip,
   List,
   ListItem,
   ListItemText,
-  LinearProgress
+  LinearProgress,
+  Button
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import {
   Assessment as AssessmentIcon,
   Security as SecurityIcon,
@@ -39,10 +42,10 @@ const mockTrendsData = [
   { name: 'Sun', score: 96, violations: 1 },
 ];
 
-function StatCard({ title, value, icon, color = 'primary', subtitle }) {
+function StatCard({ title, value, icon, color = 'primary', subtitle, actionLabel, onAction }) {
   return (
-    <Card>
-      <CardContent>
+    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <Box sx={{ color: `${color}.main`, mr: 2 }}>
             {icon}
@@ -60,6 +63,13 @@ function StatCard({ title, value, icon, color = 'primary', subtitle }) {
           </Typography>
         )}
       </CardContent>
+      {actionLabel && onAction && (
+        <CardActions>
+          <Button size="small" color={color} onClick={onAction}>
+            {actionLabel}
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 }
@@ -115,6 +125,7 @@ function ComplianceScoreCard({ score, status }) {
 export default function Dashboard() {
   const { user } = useAuth();
   const { getDashboardData } = useApi();
+  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -267,6 +278,8 @@ export default function Dashboard() {
                 value={dashboardData?.total_assessments || 0}
                 icon={<AssessmentIcon />}
                 color="primary"
+                actionLabel="View All"
+                onAction={() => navigate('/assessments')}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -290,11 +303,13 @@ export default function Dashboard() {
                 icon={<SecurityIcon />}
                 color="error"
                 subtitle="Last 7 days"
+                actionLabel="View Audit Trail"
+                onAction={() => navigate('/audit-trail')}
               />
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <Card>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Compliance Status
@@ -318,28 +333,42 @@ export default function Dashboard() {
                         : 'Some areas need attention to maintain compliance.'
                       }
                     </Typography>
+                    <Box sx={{ mt: 2 }}>
+                       <Button variant="outlined" size="small" onClick={() => navigate('/guardrails')}>Manage Guardrails</Button>
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <Card>
+              <Card sx={{ height: '100%' }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Recent Activity
+                    Recent Assessments
                   </Typography>
-                  <Box sx={{ mt: 2 }}>
-                    <Typography variant="body2" gutterBottom>
-                      Guardrail Violations (7 days): {dashboardData?.recent_violations || 0}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                      Assessments in Progress: {(dashboardData?.total_assessments || 0) - (dashboardData?.completed_assessments || 0)}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Keep monitoring your compliance metrics regularly.
-                    </Typography>
-                  </Box>
+                  {dashboardData?.recent_assessments?.length > 0 ? (
+                    <List disablePadding>
+                      {dashboardData.recent_assessments.slice(0, 3).map((assessment, index) => (
+                        <ListItem key={index} divider sx={{ px: 0 }}>
+                          <ListItemText
+                            primary={`${assessment.assessment_type.toUpperCase()} Assessment`}
+                            secondary={`Status: ${assessment.status.replace('_', ' ')} | Score: ${assessment.compliance_score || 0}%`}
+                          />
+                          <Chip
+                            label={assessment.status.replace('_', ' ').toUpperCase()}
+                            color={assessment.status === 'completed' ? 'success' : 'default'}
+                            size="small"
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography color="text.secondary" sx={{ mt: 2 }}>No recent assessments</Typography>
+                  )}
+                  <Button sx={{ mt: 1 }} size="small" color="primary" onClick={() => navigate('/assessments')}>
+                     View Assessment History
+                  </Button>
                 </CardContent>
               </Card>
             </Grid>

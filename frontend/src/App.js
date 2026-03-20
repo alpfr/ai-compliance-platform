@@ -18,6 +18,9 @@ import Guardrails from './components/Guardrails';
 import Organizations from './components/Organizations';
 import AuditTrail from './components/AuditTrail';
 import Navigation from './components/Navigation';
+import PendingApprovals from './components/PendingApprovals';
+import About from './components/About';
+import Settings from './components/Settings';
 
 // Premium Dark Theme configuration
 const theme = createTheme({
@@ -36,9 +39,11 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: 13, // Scaled down for maximum density
     h4: {
       fontWeight: 700,
       letterSpacing: '-0.02em',
+      fontSize: '1.75rem',
     },
     h6: {
       fontWeight: 600,
@@ -113,9 +118,24 @@ function AppContent() {
               <Organizations />
             </ProtectedRoute>
           } />
+          <Route path="/approvals" element={
+            <ProtectedRoute>
+              <PendingApprovals />
+            </ProtectedRoute>
+          } />
           <Route path="/audit-trail" element={
             <ProtectedRoute>
               <AuditTrail />
+            </ProtectedRoute>
+          } />
+          <Route path="/about" element={
+            <ProtectedRoute>
+              <About />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } />
         </Routes>

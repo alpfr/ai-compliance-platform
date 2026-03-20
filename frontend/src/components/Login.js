@@ -34,6 +34,7 @@ export default function Login() {
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [registerData, setRegisterData] = useState({
     username: '',
+    email: '',
     password: '',
     role: 'organization_admin',
     organizationName: ''
@@ -72,6 +73,7 @@ export default function Login() {
 
     const result = await register(
       registerData.username,
+      registerData.email,
       registerData.password,
       registerData.role,
       registerData.organizationName
@@ -172,6 +174,15 @@ export default function Login() {
                   label="Username"
                   value={registerData.username}
                   onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Corporate Email"
+                  type="email"
+                  value={registerData.email}
+                  onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
                 />
                 <TextField
                   margin="normal"

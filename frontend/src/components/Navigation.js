@@ -24,11 +24,14 @@ import {
   Security as SecurityIcon,
   Business as BusinessIcon,
   History as HistoryIcon,
-  Logout as LogoutIcon
+  Logout as LogoutIcon,
+  GroupAdd as GroupAddIcon,
+  Info as InfoIcon,
+  Settings as SettingsIcon
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 export default function Navigation() {
   const { user, logout } = useAuth();
@@ -47,7 +50,12 @@ export default function Navigation() {
     ...(user?.role === 'regulatory_inspector' ? [
       { text: 'Organizations', icon: <BusinessIcon />, path: '/organizations' }
     ] : []),
-    { text: 'Audit Trail', icon: <HistoryIcon />, path: '/audit-trail' }
+    ...(user?.role === 'organization_admin' || user?.role === 'super_admin' ? [
+      { text: 'Pending Approvals', icon: <GroupAddIcon />, path: '/approvals' }
+    ] : []),
+    { text: 'Audit Trail', icon: <HistoryIcon />, path: '/audit-trail' },
+    { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+    { text: 'About', icon: <InfoIcon />, path: '/about' }
   ];
 
   const getRoleColor = (role) => {
