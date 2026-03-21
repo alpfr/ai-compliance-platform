@@ -227,6 +227,43 @@ def seed_database():
             ))
         
         conn.commit()
+
+        # Create AI Models
+        sample_models = [
+            ("gpt-4-turbo", "GPT-4 Turbo", "OpenAI", "2024-04-09", "Most capable OpenAI model", ["text", "vision", "code"], ["financial_services", "healthcare", "automotive", "government", "retail"], True, True),
+            ("gpt-3.5-turbo", "GPT-3.5 Turbo", "OpenAI", "0125", "Fast and efficient OpenAI model", ["text", "code"], ["retail", "automotive"], True, False),
+            ("claude-3-opus", "Claude 3 Opus", "Anthropic", "20240229", "Most powerful Anthropic model", ["text", "vision", "code", "analysis"], ["financial_services", "healthcare", "government"], True, True),
+            ("claude-3-sonnet", "Claude 3 Sonnet", "Anthropic", "20240229", "Balanced Anthropic model", ["text", "vision", "code"], ["financial_services", "retail", "automotive"], True, False),
+            ("gemini-1.5-pro", "Gemini 1.5 Pro", "Google", "latest", "Advanced Google model", ["text", "vision", "audio", "code"], ["financial_services", "healthcare", "automotive"], True, True),
+            ("llama-3-70b", "Llama 3 70B", "Meta", "latest", "Open weights model", ["text", "code"], ["retail", "automotive"], True, False),
+        ]
+        
+        print("🤖 Creating sample AI models...")
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS ai_models (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                provider TEXT NOT NULL,
+                version TEXT,
+                description TEXT,
+                capabilities TEXT,
+                supported_industries TEXT,
+                is_active BOOLEAN DEFAULT TRUE,
+                is_recommended BOOLEAN DEFAULT FALSE,
+                status TEXT DEFAULT 'active',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        for m_id, name, provider, version, desc, caps, inds, is_active, is_rec in sample_models:
+            cursor.execute("SELECT id FROM ai_models WHERE id = %s", (m_id,))
+            if not cursor.fetchone():
+                cursor.execute("""
+                    INSERT INTO ai_models (id, name, provider, version, description, capabilities, supported_industries, is_active, is_recommended)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (m_id, name, provider, version, desc, json.dumps(caps), json.dumps(inds), is_active, is_rec))
+        conn.commit()
+
         print("✅ Sample data created successfully!")
         
         # Print summary

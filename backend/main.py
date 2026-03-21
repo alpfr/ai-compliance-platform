@@ -247,7 +247,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+            raise HTTPException(status_code=401, detail="Invalid authentication credentials: missing sub claim")
         
         with get_db() as conn:
             user = conn.execute(
@@ -256,8 +256,8 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
             if user is None:
                 raise HTTPException(status_code=401, detail="User not found")
             return dict(user)
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except jwt.PyJWTError as e:
+        raise HTTPException(status_code=401, detail=f"Invalid authentication credentials: {str(e)}")
 
 # Pydantic Models
 class UserLogin(BaseModel):
