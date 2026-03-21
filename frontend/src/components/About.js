@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Box, 
   Container, 
@@ -14,7 +14,13 @@ import {
   Divider,
   Chip,
   Avatar,
-  Button
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  TextField
 } from '@mui/material';
 import {
   Security as SecurityIcon,
@@ -51,6 +57,19 @@ export default function About() {
     }
   ];
 
+  const [openDemoDialog, setOpenDemoDialog] = useState(false);
+  const [demoForm, setDemoForm] = useState({ name: '', email: '', phone: '' });
+
+  const handleDemoSubmit = () => {
+    // Construct rich mailto payload
+    const subject = encodeURIComponent("Inquiry: AI Compliance Platform Demo");
+    const body = encodeURIComponent(
+      `Hello Alpfr team,\n\nI am requesting a live demo of the AI Compliance Platform.\n\nMy Details:\nName: ${demoForm.name}\nEmail: ${demoForm.email}\nPhone: ${demoForm.phone}\n\nPlease reach out to schedule a meeting.`
+    );
+    window.location.href = `mailto:info@alpfr.com?subject=${subject}&body=${body}`;
+    setOpenDemoDialog(false);
+  };
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
       {/* Header Section */}
@@ -66,7 +85,7 @@ export default function About() {
           <Button 
             variant="contained" 
             color="secondary" 
-            href="mailto:demo@example.com?subject=Inquiry: AI Compliance Platform Demo"
+            onClick={() => setOpenDemoDialog(true)}
             sx={{ borderRadius: 6, px: 3, fontWeight: 'bold' }}
           >
             Request a Live Demo
@@ -182,7 +201,7 @@ export default function About() {
             variant="contained" 
             color="primary" 
             size="large"
-            href="mailto:demo@example.com?subject=Inquiry: AI Compliance Platform Demo"
+            onClick={() => setOpenDemoDialog(true)}
             sx={{ borderRadius: 8, px: 6, py: 1.5, mb: 4, fontSize: '1.1rem', fontWeight: 'bold' }}
         >
             Contact Me for a Demo
@@ -191,6 +210,52 @@ export default function About() {
           © 2026 AI Compliance Platform. Powered by deep agentic intelligence.
         </Typography>
       </Box>
+
+      {/* Demo Request Dialog */}
+      <Dialog open={openDemoDialog} onClose={() => setOpenDemoDialog(false)} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ fontWeight: 700, pb: 1 }}>Request a Live Platform Demo</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ mb: 3 }}>
+            Please provide your contact information below. We will establish direct contact to securely schedule a personalized walkthrough of the platform's dual-mode operations.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Full Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={demoForm.name}
+            onChange={(e) => setDemoForm({ ...demoForm, name: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="dense"
+            label="Corporate Email Address"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={demoForm.email}
+            onChange={(e) => setDemoForm({ ...demoForm, email: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="dense"
+            label="Telephone Number"
+            type="tel"
+            fullWidth
+            variant="outlined"
+            value={demoForm.phone}
+            onChange={(e) => setDemoForm({ ...demoForm, phone: e.target.value })}
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 3 }}>
+          <Button onClick={() => setOpenDemoDialog(false)} color="inherit">Cancel</Button>
+          <Button onClick={handleDemoSubmit} variant="contained" color="primary">
+            Submit Request
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }
