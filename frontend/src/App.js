@@ -129,11 +129,7 @@ function AppContent() {
               <AuditTrail />
             </ProtectedRoute>
           } />
-          <Route path="/about" element={
-            <ProtectedRoute>
-              <About />
-            </ProtectedRoute>
-          } />
+          <Route path="/about" element={<About />} />
           <Route path="/settings" element={
             <ProtectedRoute>
               <Settings />

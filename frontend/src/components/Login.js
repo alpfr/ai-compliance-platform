@@ -227,6 +227,20 @@ export default function Login() {
             </TabPanel>
           </Box>
         </Paper>
+        
+        <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            Are you a prospective client or regulatory partner?
+          </Typography>
+          <Button 
+            variant="outlined" 
+            color="primary" 
+            onClick={() => navigate('/about')}
+            sx={{ mt: 1, borderRadius: 6, px: 4 }}
+          >
+            Learn About the Platform
+          </Button>
+        </Box>
       </Box>
     </Container>
   );

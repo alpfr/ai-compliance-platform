@@ -13,7 +13,8 @@ import {
   ListItemText,
   Divider,
   Chip,
-  Avatar
+  Avatar,
+  Button
 } from '@mui/material';
 import {
   Security as SecurityIcon,
@@ -60,7 +61,17 @@ export default function About() {
         <Typography variant="h6" color="text.secondary" sx={{ maxWidth: '800px', mx: 'auto' }}>
           Bridging the gap between internal AI builders pushing for velocity, and compliance bodies requiring total oversight.
         </Typography>
-        <Chip label="Version: 1.0.0-MVP" color="primary" variant="outlined" sx={{ mt: 2 }} />
+        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', gap: 2 }}>
+          <Chip label="Version: 1.0.0-MVP" color="primary" variant="outlined" />
+          <Button 
+            variant="contained" 
+            color="secondary" 
+            href="mailto:demo@example.com?subject=Inquiry: AI Compliance Platform Demo"
+            sx={{ borderRadius: 6, px: 3, fontWeight: 'bold' }}
+          >
+            Request a Live Demo
+          </Button>
+        </Box>
       </Box>
 
       {/* The Pitch Section */}
@@ -166,6 +177,16 @@ export default function About() {
       </Box>
       
       <Box sx={{ mt: 8, textAlign: 'center', pt: 4, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>Ready to Secure Your AI Infrastructure?</Typography>
+        <Button 
+            variant="contained" 
+            color="primary" 
+            size="large"
+            href="mailto:demo@example.com?subject=Inquiry: AI Compliance Platform Demo"
+            sx={{ borderRadius: 8, px: 6, py: 1.5, mb: 4, fontSize: '1.1rem', fontWeight: 'bold' }}
+        >
+            Contact Me for a Demo
+        </Button>
         <Typography variant="body2" color="text.secondary">
           © 2026 AI Compliance Platform. Powered by deep agentic intelligence.
         </Typography>
