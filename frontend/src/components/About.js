@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   Box, 
   Container, 
@@ -57,6 +58,7 @@ export default function About() {
     }
   ];
 
+  const { user } = useAuth();
   const [openDemoDialog, setOpenDemoDialog] = useState(false);
   const [demoForm, setDemoForm] = useState({ name: '', email: '', phone: '' });
 
@@ -71,8 +73,13 @@ export default function About() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
-      {/* Header Section */}
+    <Box sx={{ 
+      pt: user ? 10 : 8,  // Clear fixed AppBar when logged in
+      pl: user ? { xs: 0, sm: '200px' } : 0, // Clear fixed Sidebar when logged in
+      width: '100%' 
+    }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
+        {/* Header Section */}
       <Box sx={{ mb: 6, textAlign: 'center' }}>
         <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 800, color: 'primary.main' }}>
           AI Compliance Platform
@@ -256,6 +263,7 @@ export default function About() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+      </Container>
+    </Box>
   );
 }
