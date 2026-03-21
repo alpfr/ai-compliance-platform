@@ -67,6 +67,13 @@ spec:
                 name: backend-svc
                 port:
                   number: 8000
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-svc
+                port:
+                  number: 8000
           - path: /openapi.json
             pathType: Exact
             backend:
