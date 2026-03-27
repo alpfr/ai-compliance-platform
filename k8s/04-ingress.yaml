@@ -6,11 +6,9 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     networking.gke.io/managed-certificates: "ai-compliance-cert"
-    kubernetes.io/ingress.global-static-ip-name: "ai-compliance-ip"
 spec:
   rules:
-    - host: aicompliance.opssightai.com
-      http:
+    - http:
         paths:
           # Backend API Routes
           - path: /auth
