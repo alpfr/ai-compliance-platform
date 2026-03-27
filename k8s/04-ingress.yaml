@@ -5,10 +5,12 @@ metadata:
   namespace: ai-compliance
   annotations:
     kubernetes.io/ingress.class: "gce"
-    # kubernetes.io/ingress.global-static-ip-name: "ai-compliance-ip"
+    networking.gke.io/managed-certificates: "ai-compliance-cert"
+    kubernetes.io/ingress.global-static-ip-name: "ai-compliance-ip"
 spec:
   rules:
-    - http:
+    - host: aicompliance.opssightai.com
+      http:
         paths:
           # Backend API Routes
           - path: /auth
@@ -81,7 +83,21 @@ spec:
                 name: backend-svc
                 port:
                   number: 8000
-                  
+          - path: /models
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-svc
+                port:
+                  number: 8000
+          - path: /reports
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-svc
+                port:
+                  number: 8000
+
           # Frontend Routes (Catch-all)
           - path: /
             pathType: Prefix
@@ -90,3 +106,12 @@ spec:
                 name: frontend-svc
                 port:
                   number: 3000
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: ai-compliance-cert
+  namespace: ai-compliance
+spec:
+  domains:
+    - aicompliance.opssightai.com
