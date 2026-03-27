@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/venv/
+backend/__pycache__/
+__pycache__/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build
+frontend/build/
+dist/
+
+# PID files
+*.pid
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+*.pyc
+*.pyo
+*.egg-info/
+
+# Release artifacts
+releases/*.tar.gz
+releases/*.sha256
